@@ -1,0 +1,412 @@
+import{_ as e,C as h,o as r,c as k,a4 as t,j as s,a as n,E as l,w as p}from"./chunks/framework.Cp_kp8rY.js";const v=JSON.parse('{"title":"Java并发编程_基础概念","description":"","frontmatter":{"title":"Java并发编程_基础概念","date":"2023-11-15 23:47:00","updated":"2023-11-15 23:47:00"},"headers":[],"relativePath":"notes/0/1/1.5/1.5.1/1.5.1.6/1.5.1.6.2/Java并发编程_基础概念.md","filePath":"notes/0/1/1.5/1.5.1/1.5.1.6/1.5.1.6.2/Java并发编程_基础概念.md"}'),c={name:"notes/0/1/1.5/1.5.1/1.5.1.6/1.5.1.6.2/Java并发编程_基础概念.md"},o={tabindex:"0"};function d(g,a,E,u,y,b){const i=h("font");return r(),k("div",null,[a[29]||(a[29]=t(`<blockquote><p>大纲</p></blockquote><ul><li>线程基础概念</li><li>Java 线程</li><li>生命周期</li><li>创建线程</li><li>线程的调用方法</li><li>Synchronized 和 Lock</li></ul><p>线程</p><p><img src="https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/202401191403753.png" alt="image.png"></p><h3 id="_1、基础概念" tabindex="-1">1、基础概念 <a class="header-anchor" href="#_1、基础概念" aria-label="Permalink to &quot;1、基础概念&quot;">​</a></h3><h4 id="进程和线程" tabindex="-1">进程和线程 <a class="header-anchor" href="#进程和线程" aria-label="Permalink to &quot;进程和线程&quot;">​</a></h4><h5 id="进程" tabindex="-1">进程 <a class="header-anchor" href="#进程" aria-label="Permalink to &quot;进程&quot;">​</a></h5><p>在计算机i中，程序由指令和数据组成，但这些指令要运行，数据要读写，就必须将指令加载至CPU,数据加载至内存。在指令运行过程中还需要用到磁盘、网络等设备。</p><p>进程就是用来加载指令、管理内存、管理 IO 的。当一个程序被运行，从磁盘加载这个程序的代码至内存，这时就开启了一个进程。</p><h5 id="线程" tabindex="-1">线程 <a class="header-anchor" href="#线程" aria-label="Permalink to &quot;线程&quot;">​</a></h5><p>一个线程就是一个指令流，将指令流中的一条条指令以一定的顺序交给CPU执行，一个进程之内可以分为一到多个线程。</p><p>总结：</p><p>线程是程序执行的最小单位，它是进程的一部分，共享进程的资源。</p><p>进程是操作系统分配资源和调度的基本单位，每个进程至少包含一个线程。</p><p><strong>区别</strong>：进程有独立的内存空间，而线程共享进程的内存空间；进程间通信（IPC）成本较高，上下文切换较慢，线程间通信和切换成本较低；线程是实现多任务的最小单位，进程是拥有资源的最小单位。</p><p><img src="https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/20240308231739.png" alt="image.png"></p><hr><h4 id="并行和并发" tabindex="-1">并行和并发 <a class="header-anchor" href="#并行和并发" aria-label="Permalink to &quot;并行和并发&quot;">​</a></h4><ul><li>并行：两个及两个以上的作业在同一 <strong>时刻</strong> 执行。</li><li>并发：两个及两个以上的作业在同一 <strong>时间段</strong> 内执行。</li></ul><p>最关键的点是：是否是 <strong>同时</strong> 执行</p><hr><p>解释2：并行和并发有什么区别？</p><p>在单核CPU的情况下：</p><ul><li>单核CPU下线程实际还是串行执行的</li><li>操作系统中有一个组件叫做任务调度器，将cpu的时间片(windows下时间片最小约为15毫秒)分给不同的程序使用，只是由于cpu在线程间（时间片很短）的切换非常快，人类感觉是同时运行的。</li><li>总结为一句话就是：微观串行，宏观并行</li></ul><p>一般会将这种线程轮流使用 CPU的做法 称为并发(concurrent）</p><p>在多核 CPU 的情况下：</p><p>每个核(core)都可以调度运行线程，这时候线程可以是并行的。</p><p><img src="https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/20240304152134.png" alt="image.png"></p><p>总结</p><p>现在都是多核CPU,在多核CPU下</p><ul><li>并发是同一时间<strong>应对</strong>多件事情的能力，多个线程轮流使用一个或多个CPU</li><li>并行是同一时间<strong>动手</strong>做多件事情的能力，4核CPU同时执行4个线程</li></ul><hr><h4 id="同步和异步" tabindex="-1">同步和异步 <a class="header-anchor" href="#同步和异步" aria-label="Permalink to &quot;同步和异步&quot;">​</a></h4><p>同步和异步的区别</p><ul><li><strong>同步</strong>：发出一个调用之后，在没有得到结果之前， 该调用就不可以返回，一直等待。</li><li><strong>异步</strong>：调用在发出之后，<strong>不用等待返回结果</strong>，该调用直接返回。</li></ul><h3 id="_2、什么是java-线程" tabindex="-1">2、什么是Java 线程 <a class="header-anchor" href="#_2、什么是java-线程" aria-label="Permalink to &quot;2、什么是Java 线程&quot;">​</a></h3><p>在 JDK 1.2 及以后，Java 线程基于原生线程（Native Threads）实现， JVM 直接使用操作系统原生的内核级线程（内核线程）来实现 Java 线程，由操作系统内核进行线程的调度和管理。</p><p>用一句话概括 Java 线程和操作系统线程的关系：<strong>现在的 Java 线程的本质其实就是操作系统的线程</strong>。</p><p>在 Windows 和 Linux 等主流操作系统中，Java 线程采用的是一对一的线程模型，一个 Java 线程对应一个系统内核线程。</p><h3 id="_3、线程的生命周期及五种基本状态" tabindex="-1">3、线程的生命周期及五种基本状态 <a class="header-anchor" href="#_3、线程的生命周期及五种基本状态" aria-label="Permalink to &quot;3、线程的生命周期及五种基本状态&quot;">​</a></h3><p>五种基本状态：新建，就绪，阻塞，运行，死亡</p><p><img src="https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/202311161130480.png" alt="image.png"></p><p>关于Java中线程的生命周期，首先看一下下面这张较为经典的图：</p><p><img src="https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/202311161129688.png" alt="image.png"></p><p>上图中基本上囊括了Java中多线程各重要知识点。掌握了上图中的各知识点，Java中的多线程也就基本上掌握了。主要包括：</p><p>Java线程具有五中基本状态</p><ul><li>新建状态（New） <ul><li>当线程对象对创建后，即进入了新建状态，如：Thread t = new MyThread();</li></ul></li><li>就绪状态（Runnable） <ul><li>当调用线程对象的start()方法（t.start();），线程即进入就绪状态。</li><li>处于就绪状态的线程，只是说明此线程已经做好了准备，随时等待CPU调度执行，并不是说执行了t.start()此线程立即就会执行；</li></ul></li><li>运行状态（Running） <ul><li>当CPU开始调度处于就绪状态的线程时，此时线程才得以真正执行，即进入到运行状态。</li><li>注：就 绪状态是进入到运行状态的唯一入口，也就是说，线程要想进入运行状态执行，首先必须处于就绪状态中</li></ul></li><li>阻塞状态（Blocked） <ul><li>处于运行状态中的线程由于某种原因，暂时放弃对CPU的使用权，停止执行，此时进入阻塞状态，直到其进入到就绪状态，才 有机会再次被CPU调用以进入到运行状态。</li><li>根据阻塞产生的原因不同，阻塞状态又可以分为三种 <ul><li><strong>1.等待阻塞：运行状态中的线程执行wait()方法，使本线程进入到等待阻塞状态</strong>；</li><li><strong>2.同步阻塞 :</strong> 线程在获取synchronized同步锁失败(因为锁被其它线程所占用)，它会进入同步阻塞状态；</li><li><strong>3.其他阻塞 :</strong> 通过调用线程的sleep()或join()或发出了I/O请求时，线程会进入到阻塞状态。当sleep()状态超时、join()等待线程终止或者超时、或者I/O处理完毕时，线程重新转入就绪状态。</li></ul></li></ul></li><li>死亡状态（Dead） <ul><li>线程执行完了或者因异常退出了run()方法，该线程结束生命周期。</li></ul></li></ul><blockquote><p>Java多线程的就绪、运行和死亡状态</p></blockquote><p>就绪状态转换为运行状态：当此线程得到处理器资源；</p><p>运行状态转换为就绪状态：当此线程主动调用yield()方法或在运行过程中失去处理器资源。</p><p>运行状态转换为死亡状态：当此线程线程执行体执行完毕或发生了异常。</p><p>此处需要特别注意的是：当调用线程的yield()方法时，线程从运行状态转换为就绪状态，但接下来CPU调度就绪状态中的哪个线程具有一定的随机性，因此，可能会出现A线程调用了yield()方法后，接下来CPU仍然调度了A线程的情况。</p><hr><p>在 Java 的 Thread 类中，有一个 State 的枚举</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>    /**</span></span>
+<span class="line"><span>     * A thread state.  A thread can be in one of the following states:</span></span>
+<span class="line"><span>     * &lt;ul&gt;</span></span>
+<span class="line"><span>     * &lt;li&gt;{@link #NEW}&lt;br&gt;</span></span>
+<span class="line"><span>     *     A thread that has not yet started is in this state.</span></span>
+<span class="line"><span>     *     &lt;/li&gt;</span></span>
+<span class="line"><span>     * &lt;li&gt;{@link #RUNNABLE}&lt;br&gt;</span></span>
+<span class="line"><span>     *     A thread executing in the Java virtual machine is in this state.</span></span>
+<span class="line"><span>     *     &lt;/li&gt;</span></span>
+<span class="line"><span>     * &lt;li&gt;{@link #BLOCKED}&lt;br&gt;</span></span>
+<span class="line"><span>     *     A thread that is blocked waiting for a monitor lock</span></span>
+<span class="line"><span>     *     is in this state.</span></span>
+<span class="line"><span>     *     &lt;/li&gt;</span></span>
+<span class="line"><span>     * &lt;li&gt;{@link #WAITING}&lt;br&gt;</span></span>
+<span class="line"><span>     *     A thread that is waiting indefinitely for another thread to</span></span>
+<span class="line"><span>     *     perform a particular action is in this state.</span></span>
+<span class="line"><span>     *     &lt;/li&gt;</span></span>
+<span class="line"><span>     * &lt;li&gt;{@link #TIMED_WAITING}&lt;br&gt;</span></span>
+<span class="line"><span>     *     A thread that is waiting for another thread to perform an action</span></span>
+<span class="line"><span>     *     for up to a specified waiting time is in this state.</span></span>
+<span class="line"><span>     *     &lt;/li&gt;</span></span>
+<span class="line"><span>     * &lt;li&gt;{@link #TERMINATED}&lt;br&gt;</span></span>
+<span class="line"><span>     *     A thread that has exited is in this state.</span></span>
+<span class="line"><span>     *     &lt;/li&gt;</span></span>
+<span class="line"><span>     * &lt;/ul&gt;</span></span>
+<span class="line"><span>     *</span></span>
+<span class="line"><span>     * &lt;p&gt;</span></span>
+<span class="line"><span>     * A thread can be in only one state at a given point in time.</span></span>
+<span class="line"><span>     * These states are virtual machine states which do not reflect</span></span>
+<span class="line"><span>     * any operating system thread states.</span></span>
+<span class="line"><span>     *</span></span>
+<span class="line"><span>     * @since   1.5</span></span>
+<span class="line"><span>     * @see #getState</span></span>
+<span class="line"><span>     */</span></span>
+<span class="line"><span>    public enum State {</span></span>
+<span class="line"><span>        /**</span></span>
+<span class="line"><span>         * Thread state for a thread which has not yet started.</span></span>
+<span class="line"><span>         */</span></span>
+<span class="line"><span>        NEW,</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        /**</span></span>
+<span class="line"><span>         * Thread state for a runnable thread.  A thread in the runnable</span></span>
+<span class="line"><span>         * state is executing in the Java virtual machine but it may</span></span>
+<span class="line"><span>         * be waiting for other resources from the operating system</span></span>
+<span class="line"><span>         * such as processor.</span></span>
+<span class="line"><span>         */</span></span>
+<span class="line"><span>        RUNNABLE,</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        /**</span></span>
+<span class="line"><span>         * Thread state for a thread blocked waiting for a monitor lock.</span></span>
+<span class="line"><span>         * A thread in the blocked state is waiting for a monitor lock</span></span>
+<span class="line"><span>         * to enter a synchronized block/method or</span></span>
+<span class="line"><span>         * reenter a synchronized block/method after calling</span></span>
+<span class="line"><span>         * {@link Object#wait() Object.wait}.</span></span>
+<span class="line"><span>         */</span></span>
+<span class="line"><span>        BLOCKED,</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        /**</span></span>
+<span class="line"><span>         * Thread state for a waiting thread.</span></span>
+<span class="line"><span>         * A thread is in the waiting state due to calling one of the</span></span>
+<span class="line"><span>         * following methods:</span></span>
+<span class="line"><span>         * &lt;ul&gt;</span></span>
+<span class="line"><span>         *   &lt;li&gt;{@link Object#wait() Object.wait} with no timeout&lt;/li&gt;</span></span>
+<span class="line"><span>         *   &lt;li&gt;{@link #join() Thread.join} with no timeout&lt;/li&gt;</span></span>
+<span class="line"><span>         *   &lt;li&gt;{@link LockSupport#park() LockSupport.park}&lt;/li&gt;</span></span>
+<span class="line"><span>         * &lt;/ul&gt;</span></span>
+<span class="line"><span>         *</span></span>
+<span class="line"><span>         * &lt;p&gt;A thread in the waiting state is waiting for another thread to</span></span>
+<span class="line"><span>         * perform a particular action.</span></span>
+<span class="line"><span>         *</span></span>
+<span class="line"><span>         * For example, a thread that has called &lt;tt&gt;Object.wait()&lt;/tt&gt;</span></span>
+<span class="line"><span>         * on an object is waiting for another thread to call</span></span>
+<span class="line"><span>         * &lt;tt&gt;Object.notify()&lt;/tt&gt; or &lt;tt&gt;Object.notifyAll()&lt;/tt&gt; on</span></span>
+<span class="line"><span>         * that object. A thread that has called &lt;tt&gt;Thread.join()&lt;/tt&gt;</span></span>
+<span class="line"><span>         * is waiting for a specified thread to terminate.</span></span>
+<span class="line"><span>         */</span></span>
+<span class="line"><span>        WAITING,</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        /**</span></span>
+<span class="line"><span>         * Thread state for a waiting thread with a specified waiting time.</span></span>
+<span class="line"><span>         * A thread is in the timed waiting state due to calling one of</span></span>
+<span class="line"><span>         * the following methods with a specified positive waiting time:</span></span>
+<span class="line"><span>         * &lt;ul&gt;</span></span>
+<span class="line"><span>         *   &lt;li&gt;{@link #sleep Thread.sleep}&lt;/li&gt;</span></span>
+<span class="line"><span>         *   &lt;li&gt;{@link Object#wait(long) Object.wait} with timeout&lt;/li&gt;</span></span>
+<span class="line"><span>         *   &lt;li&gt;{@link #join(long) Thread.join} with timeout&lt;/li&gt;</span></span>
+<span class="line"><span>         *   &lt;li&gt;{@link LockSupport#parkNanos LockSupport.parkNanos}&lt;/li&gt;</span></span>
+<span class="line"><span>         *   &lt;li&gt;{@link LockSupport#parkUntil LockSupport.parkUntil}&lt;/li&gt;</span></span>
+<span class="line"><span>         * &lt;/ul&gt;</span></span>
+<span class="line"><span>         */</span></span>
+<span class="line"><span>        TIMED_WAITING,</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        /**</span></span>
+<span class="line"><span>         * Thread state for a terminated thread.</span></span>
+<span class="line"><span>         * The thread has completed execution.</span></span>
+<span class="line"><span>         */</span></span>
+<span class="line"><span>        TERMINATED;</span></span>
+<span class="line"><span>    }</span></span></code></pre></div><p>分析流程图</p><p><img src="https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/20240304154734.png" alt="image.png"></p><blockquote><p>面试题：1.线程包括哪些状态</p></blockquote><p>新建(NEW)、可运行(RUNNABLE)、阻塞(BLOCKED)、等待(WAITING)、时间等待(TIMED_WALTING)、终止(TERMINATED)</p><blockquote><p>面试题：2.线程状态之间是如何变化的</p></blockquote><ul><li>创建线程对象是新建状态</li><li>调用了stat()方法转变为<strong>可执行状态</strong></li><li>线程获取到了CPU的执行权，执行结束是<strong>终止状态</strong></li><li>在可执行状态的过程中，如果没有获取 CPU 的执行权，可能会切换其他状态 <ul><li>如果没有获取锁(synchronized 或Iock)进入<strong>阻塞状态</strong>，获得锁再切换为可执行状态</li><li>如果线程调用了wait()方法进入<strong>等待状态</strong>，其他线程调用notify()唤醒后可切换为可执行状态</li><li>如果线程调用了sleep(50)方法，进入<strong>计时等待状态</strong>，到时间后可切换为可执行状态</li></ul></li></ul><h3 id="_4、创建线程" tabindex="-1">4、创建线程 <a class="header-anchor" href="#_4、创建线程" aria-label="Permalink to &quot;4、创建线程&quot;">​</a></h3><h4 id="线程创建-🚩" tabindex="-1">线程创建 🚩 <a class="header-anchor" href="#线程创建-🚩" aria-label="Permalink to &quot;线程创建 🚩&quot;">​</a></h4><p>在Java中，有三种常见的线程创建方式：使用Thread类、实现Runnable接口和实现Callable接口。</p><ol><li>Thread类：Thread类是 Java 提供的一个线程类，我们可以通过继承Thread类来创建线程。<strong>通过重写Thread类的run()方法来定义线程的执行逻辑</strong>。</li></ol><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">class</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> MyThread</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> extends</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Thread</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    @</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Override</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> run</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() {</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        // 线程的执行逻辑</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 创建线程</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">MyThread myThread </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> MyThread</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">myThread.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">start</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span></code></pre></div><ol start="2"><li>Runnable 接口：Runnable接口是一个函数式接口，我们可以通过实现Runnable接口来创建线程。需要注意的是，Runnable接口并不是一个线程类，<strong>而是一个任务，需要通过Thread类来创建线程</strong>并执行任务。</li></ol><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">class</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> MyRunnable</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> implements</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Runnable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    @</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Override</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> run</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() {</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        // 线程的执行逻辑</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 创建线程</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">MyRunnable myRunnable </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> MyRunnable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Thread thread </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Thread</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(myRunnable);</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">thread.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">start</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span></code></pre></div><ol start="3"><li>Callable接口：Callable接口也是一个函数式接口，与Runnable接口类似，可以通过实现Callable接口来创建线程。不同的是，<strong>Callable接口的call()方法可以返回一个结果，并且可以抛出异常</strong>。</li></ol><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">class</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> MyCallable</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> implements</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Callable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Integer</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt; {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    @</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Override</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Integer </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">call</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">throws</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Exception {</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">        // 线程的执行逻辑</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        return</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 42</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 返回一个结果</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 创建线程</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">MyCallable myCallable </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> MyCallable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">ExecutorService executorService </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Executors.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">newSingleThreadExecutor</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Future&lt;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Integer</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt; future </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> executorService.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">submit</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(myCallable);</span></span></code></pre></div><ul><li>使用Thread类创建线程是最直接的方式，但是由于Java不支持多继承，所以如果已经有一个父类，就不能再直接使用Thread类创建线程。</li><li>实现Runnable接口是一种更加灵活的方式，可以避免单继承的限制，还可以共享数据。</li><li>Callable接口与Runnable接口类似，但可以返回一个结果，并且可以抛出异常。可以通过ExecutorService的submit()方法来执行Callable任务，并返回一个Future对象，可以通过该对象获取任务的结果。</li></ul><hr><p>补充：</p><p>Callable + FutureTask</p><p><code>Callable</code>接口与<code>Runnable</code>接口类似，但它可以返回执行结果，并且可以抛出异常。使用<code>Callable</code>时通常配合<code>FutureTask</code>或线程池（<code>ExecutorService</code>）来使用。</p><p>示例：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>import java.util.concurrent.Callable;</span></span>
+<span class="line"><span>import java.util.concurrent.ExecutionException;</span></span>
+<span class="line"><span>import java.util.concurrent.FutureTask;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>public class CallableFutureTaskExample {</span></span>
+<span class="line"><span>    public static void main(String[] args) {</span></span>
+<span class="line"><span>        // 创建Callable对象</span></span>
+<span class="line"><span>        Callable&lt;Integer&gt; callableTask = new Callable&lt;Integer&gt;() {</span></span>
+<span class="line"><span>            @Override</span></span>
+<span class="line"><span>            public Integer call() throws Exception {</span></span>
+<span class="line"><span>                System.out.println(&quot;开始计算...&quot;);</span></span>
+<span class="line"><span>                Thread.sleep(2000); // 模拟耗时计算过程</span></span>
+<span class="line"><span>                return 123; // 返回计算结果</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        };</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        // 将Callable与FutureTask关联</span></span>
+<span class="line"><span>        FutureTask&lt;Integer&gt; futureTask = new FutureTask&lt;&gt;(callableTask);</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        // 创建线程执行FutureTask</span></span>
+<span class="line"><span>        Thread thread = new Thread(futureTask);</span></span>
+<span class="line"><span>        thread.start();</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        // 执行其他任务...</span></span>
+<span class="line"><span>        System.out.println(&quot;执行其他任务...&quot;);</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        try {</span></span>
+<span class="line"><span>            // 获取计算结果，如果计算未完成则阻塞等待</span></span>
+<span class="line"><span>            Integer result = futureTask.get();</span></span>
+<span class="line"><span>            System.out.println(&quot;计算结果: &quot; + result);</span></span>
+<span class="line"><span>        } catch (InterruptedException | ExecutionException e) {</span></span>
+<span class="line"><span>            e.printStackTrace();</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p><code>FutureTask</code>是<code>Future</code>接口的一个实现，它封装了<code>Callable</code>任务的执行。</p><p>通过将<code>Callable</code>实例传递给<code>FutureTask</code>的构造器, 然后，创建一个新的线程来执行<code>FutureTask</code>。</p><hr><p>一般在项目中会使用线程池创建线程执行任务</p><p>使用线程池执行<code>Runnable</code>任务的示例：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>import java.util.concurrent.ExecutorService;</span></span>
+<span class="line"><span>import java.util.concurrent.Executors;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>public class ThreadPoolExample {</span></span>
+<span class="line"><span>    public static void main(String[] args) {</span></span>
+<span class="line"><span>        // 创建固定大小的线程池</span></span>
+<span class="line"><span>        ExecutorService executor = Executors.newFixedThreadPool(2);</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        // 提交Runnable任务</span></span>
+<span class="line"><span>        executor.submit(new Runnable() {</span></span>
+<span class="line"><span>            @Override</span></span>
+<span class="line"><span>            public void run() {</span></span>
+<span class="line"><span>                System.out.println(&quot;Asynchronous task&quot;);</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        // 另一种提交Runnable任务的方式，使用Java 8的Lambda表达式</span></span>
+<span class="line"><span>        executor.submit(() -&gt; {</span></span>
+<span class="line"><span>            System.out.println(&quot;Asynchronous task with lambda&quot;);</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        // 关闭线程池</span></span>
+<span class="line"><span>        executor.shutdown();</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>在这个示例中，我们创建了一个固定大小为2的线程池，并提交了两个<code>Runnable</code>任务。使用线程池的好处是可以重用线程，减少线程创建和销毁的开销，以及可以控制并发线程的数量。</p><hr><p>共有四种方式可以创建线程，分别是：</p><ul><li>继承Thread类</li><li>实现 runnable 接口</li><li>实现 Callable 接口</li><li>线程池创建线程（项目中使用方式）</li></ul><blockquote><p>面试题： runnable和callable有什么区别？</p></blockquote><p>参考回答：</p><ul><li>1.Runnable接口 run 方法没有返回值</li><li>2.Callable接口 call 方法有返回值，是个泛型，和Future、FutureTaski配合可以用来获取异步执行的结果</li><li>3.Callable接口的 call() 方法允许抛出异常；而Runnable接口的runO方法的异常只能在内部消化，不能继续上抛</li></ul><blockquote><p>面试题：线程的run() 和start() 有什么区别？</p></blockquote><ul><li>start():用来启动线程，通过该线程调用run方法执行run方法中所定义的逻辑代码。start方法只能被调用一次。</li><li>run():封装了要被线程执行的代码，可以被调用多次。</li></ul><h4 id="写法简化" tabindex="-1">写法简化 <a class="header-anchor" href="#写法简化" aria-label="Permalink to &quot;写法简化&quot;">​</a></h4><blockquote><p>写法简化（Java 8)</p></blockquote><ul><li><strong>方式一：</strong></li></ul><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Thread thread </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Thread</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(){ </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    @</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Override</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> run</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() { </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        System.out.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">println</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;thread run ...&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">thread.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">start</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span></code></pre></div><p>简化后：</p><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Thread thread </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Thread</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">-&gt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> System.out.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">println</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;thread run ...&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">thread.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">start</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span></code></pre></div><ul><li><strong>方式二：</strong></li></ul><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Thread thread </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Thread</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Runnable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() { </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    @</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Override</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> run</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() { </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        System.out.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">println</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;runnable run ...&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">thread.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">start</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span></code></pre></div><p>简化后：</p><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Thread thread </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Thread</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">-&gt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> System.out.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">println</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;runnable run ...&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">));</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">thread.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">start</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span></code></pre></div><ul><li><strong>方式三：</strong></li></ul><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Callable&lt;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Integer</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt; callable </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Callable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() { </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    @</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Override</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Object </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">call</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">throws</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> Exception { </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        System.out.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">println</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;callable run ...&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">        return</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 521</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">};</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">FutureTask futureTask </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> FutureTask</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(callable);</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Thread thread </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Thread</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(futureTask);</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">thread.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">start</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span></code></pre></div><p>简化后：</p><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Thread thread </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Thread</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> FutureTask</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">-&gt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    System.out.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">println</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF;">&quot;callable run ...&quot;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    return</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;"> 521</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}));</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">thread.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">start</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span></code></pre></div><hr><h4 id="常见面试题" tabindex="-1">常见面试题 <a class="header-anchor" href="#常见面试题" aria-label="Permalink to &quot;常见面试题&quot;">​</a></h4><h5 id="顺序执行" tabindex="-1">顺序执行 <a class="header-anchor" href="#顺序执行" aria-label="Permalink to &quot;顺序执行&quot;">​</a></h5><p>常见的一道面试题：新建T1、T2、T3三个线程，如何保证它们按顺序执行？</p><p>要保证三个线程T1、T2、T3按顺序执行，即先执行T1，T1执行完毕后执行T2，T2执行完毕后执行T3，可以使用多种方法来实现。这里提供三种常见的方法：</p><p>方法1：使用<code>join()</code>方法</p><p><code>join()</code>方法可以使当前线程等待另一个线程完成后再继续执行。</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>public class ThreadOrder {</span></span>
+<span class="line"><span>    public static void main(String[] args) {</span></span>
+<span class="line"><span>        Thread t1 = new Thread(() -&gt; System.out.println(&quot;T1 is running&quot;));</span></span>
+<span class="line"><span>        Thread t2 = new Thread(() -&gt; System.out.println(&quot;T2 is running&quot;));</span></span>
+<span class="line"><span>        Thread t3 = new Thread(() -&gt; System.out.println(&quot;T3 is running&quot;));</span></span>
+<span class="line"><span>        </span></span>
+<span class="line"><span>        try {</span></span>
+<span class="line"><span>            t1.start();</span></span>
+<span class="line"><span>            t1.join(); // 等待t1执行完毕</span></span>
+<span class="line"><span>            </span></span>
+<span class="line"><span>            t2.start();</span></span>
+<span class="line"><span>            t2.join(); // 等待t2执行完毕</span></span>
+<span class="line"><span>            </span></span>
+<span class="line"><span>            t3.start();</span></span>
+<span class="line"><span>            t3.join(); // 等待t3执行完毕</span></span>
+<span class="line"><span>        } catch (InterruptedException e) {</span></span>
+<span class="line"><span>            e.printStackTrace();</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>方法2：使用<code>wait()</code>和<code>notify()/notifyAll()</code>方法</p><p>通过对象监视器的<code>wait()</code>和<code>notify()</code>方法来控制线程的执行顺序。这种方法相对复杂，需要确保<code>wait()</code>和<code>notify()</code>调用在同步块中。</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>public class ThreadOrder {</span></span>
+<span class="line"><span>    public static void main(String[] args) {</span></span>
+<span class="line"><span>        final Object lock = new Object();</span></span>
+<span class="line"><span>        Thread t1 = new Thread(() -&gt; {</span></span>
+<span class="line"><span>            synchronized (lock) {</span></span>
+<span class="line"><span>                System.out.println(&quot;T1 is running&quot;);</span></span>
+<span class="line"><span>                lock.notify(); // 唤醒等待lock对象的一个线程</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span>        </span></span>
+<span class="line"><span>        Thread t2 = new Thread(() -&gt; {</span></span>
+<span class="line"><span>            synchronized (lock) {</span></span>
+<span class="line"><span>                try {</span></span>
+<span class="line"><span>                    lock.wait(); // 使当前线程等待直到lock对象被唤醒</span></span>
+<span class="line"><span>                    System.out.println(&quot;T2 is running&quot;);</span></span>
+<span class="line"><span>                    lock.notify(); // 唤醒等待lock对象的一个线程</span></span>
+<span class="line"><span>                } catch (InterruptedException e) {</span></span>
+<span class="line"><span>                    e.printStackTrace();</span></span>
+<span class="line"><span>                }</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span>        </span></span>
+<span class="line"><span>        Thread t3 = new Thread(() -&gt; {</span></span>
+<span class="line"><span>            synchronized (lock) {</span></span>
+<span class="line"><span>                try {</span></span>
+<span class="line"><span>                    lock.wait(); // 使当前线程等待直到lock对象被唤醒</span></span>
+<span class="line"><span>                    System.out.println(&quot;T3 is running&quot;);</span></span>
+<span class="line"><span>                } catch (InterruptedException e) {</span></span>
+<span class="line"><span>                    e.printStackTrace();</span></span>
+<span class="line"><span>                }</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        try {</span></span>
+<span class="line"><span>            t2.start();</span></span>
+<span class="line"><span>            t3.start();</span></span>
+<span class="line"><span>            Thread.sleep(100); // 确保t2和t3启动并进入wait状态</span></span>
+<span class="line"><span>            t1.start();</span></span>
+<span class="line"><span>        } catch (InterruptedException e) {</span></span>
+<span class="line"><span>            e.printStackTrace();</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>方法3：使用<code>CountDownLatch</code></p><p><code>CountDownLatch</code>是一个同步辅助类，用于延迟线程的进度直到其达到终止状态。</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>import java.util.concurrent.CountDownLatch;</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>public class ThreadOrder {</span></span>
+<span class="line"><span>    public static void main(String[] args) throws InterruptedException {</span></span>
+<span class="line"><span>        CountDownLatch latch1 = new CountDownLatch(1);</span></span>
+<span class="line"><span>        CountDownLatch latch2 = new CountDownLatch(1);</span></span>
+<span class="line"><span>        </span></span>
+<span class="line"><span>        Thread t1 = new Thread(() -&gt; {</span></span>
+<span class="line"><span>            System.out.println(&quot;T1 is running&quot;);</span></span>
+<span class="line"><span>            latch1.countDown(); // 减少计数</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span>        </span></span>
+<span class="line"><span>        Thread t2 = new Thread(() -&gt; {</span></span>
+<span class="line"><span>            try {</span></span>
+<span class="line"><span>                latch1.await(); // 等待latch1计数到达0</span></span>
+<span class="line"><span>                System.out.println(&quot;T2 is running&quot;);</span></span>
+<span class="line"><span>                latch2.countDown(); // 减少计数</span></span>
+<span class="line"><span>            } catch (InterruptedException e) {</span></span>
+<span class="line"><span>                e.printStackTrace();</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span>        </span></span>
+<span class="line"><span>        Thread t3 = new Thread(() -&gt; {</span></span>
+<span class="line"><span>            try {</span></span>
+<span class="line"><span>                latch2.await(); // 等待latch2计数到达0</span></span>
+<span class="line"><span>                System.out.println(&quot;T3 is running&quot;);</span></span>
+<span class="line"><span>            } catch (InterruptedException e) {</span></span>
+<span class="line"><span>                e.printStackTrace();</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span>        </span></span>
+<span class="line"><span>        t1.start();</span></span>
+<span class="line"><span>        t2.start();</span></span>
+<span class="line"><span>        t3.start();</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>这三种方法各有特点，可以根据具体场景选择最适合的一种来保证线程按顺序执行。</p><hr><blockquote><p>面试题：新建T1、T2、T3三个线程，如何保证它们按顺序执行？</p></blockquote><p>可以使用线程中的 join 方法解决</p><p><img src="https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/20240304162424.png" alt="image.png"></p><h5 id="停止线程" tabindex="-1">停止线程 <a class="header-anchor" href="#停止线程" aria-label="Permalink to &quot;停止线程&quot;">​</a></h5><blockquote><p>如何停止一个正在运行的线程？</p></blockquote><p>有三种方式可以停止线程</p><ul><li>使用退出标志，使线程正常退出，也就是当 run 方法完成后线程终止</li><li>使用stop方法强行终止（不推荐，方法已作废）</li><li>使用interrupt方法中断线程 <ul><li>打断阻塞的线程(sleep,wait,join) 的线程，线程会抛出 InterruptedException 异常</li><li>打断正常的线程，可以根据打断状态来标记是否退出线程</li></ul></li></ul><h3 id="_5、线程基本方法" tabindex="-1">5、线程基本方法 <a class="header-anchor" href="#_5、线程基本方法" aria-label="Permalink to &quot;5、线程基本方法&quot;">​</a></h3><blockquote><p>注意：标黄色的方法代表是 <code>static</code>​ 方法，可直接类名调用，无需创建对象。</p></blockquote>`,131)),s("table",o,[a[28]||(a[28]=s("thead",null,[s("tr",null,[s("th",null,"名称"),s("th",null,"描述"),s("th",null,"注意事项")])],-1)),s("tbody",null,[a[12]||(a[12]=s("tr",null,[s("td",null,[n("​"),s("code",null,"start()"),n("​")]),s("td",null,[n("启动一个新线程，"),s("br"),n("在新的线程运行 run 方法")]),s("td",null,[n("start 方法只是让线程进入就绪，里面代码不一定立刻"),s("br"),n("运行（CPU 的时间片还没分给它）。每个线程对象的"),s("br"),n("start方法只能调用一次，如果调用了多次会出现"),s("br"),n("IllegalThreadStateException")])],-1)),a[13]||(a[13]=s("tr",null,[s("td",null,[n("​"),s("code",null,"run()"),n("​")]),s("td",null,"新线程启动后会调用的方法"),s("td",null,[n("如果在构造 Thread 对象时传递了 Runnable 参数，则"),s("br"),n("线程启动后会调用 Runnable 中的 run 方法，否则默"),s("br"),n("认不执行任何操作。但可以创建 Thread 的子类对象，"),s("br"),n("来覆盖默认行为")])],-1)),a[14]||(a[14]=s("tr",null,[s("td",null,[n("​"),s("code",null,"join()"),n("​")]),s("td",null,"等待线程运行结束"),s("td")],-1)),a[15]||(a[15]=s("tr",null,[s("td",null,[n("​"),s("code",null,"join(long n)"),n("​")]),s("td",null,[n("等待线程运行结束，"),s("br"),n("最多等待 n 毫秒")]),s("td")],-1)),a[16]||(a[16]=s("tr",null,[s("td",null,[n("​"),s("code",null,"getId()"),n("​")]),s("td",null,"获取线程长整型的 id"),s("td",null,"id 唯一")],-1)),a[17]||(a[17]=s("tr",null,[s("td",null,[n("​"),s("code",null,"getName()"),n("​")]),s("td",null,"获取线程名"),s("td")],-1)),a[18]||(a[18]=s("tr",null,[s("td",null,[n("​"),s("code",null,"setName(String name)"),n("​")]),s("td",null,"修改线程名"),s("td")],-1)),a[19]||(a[19]=s("tr",null,[s("td",null,[n("​"),s("code",null,"getPriority()"),n("​")]),s("td",null,"获取线程优先级"),s("td")],-1)),a[20]||(a[20]=s("tr",null,[s("td",null,[n("​"),s("code",null,"setPriority(int priority)"),n("​")]),s("td",null,"修改线程优先级"),s("td",null,[n("Java 中规定线程优先级是1~10 的整数，较大的优先级"),s("br"),n("能提高该线程被 CPU 调度的机率")])],-1)),a[21]||(a[21]=s("tr",null,[s("td",null,[n("​"),s("code",null,"getState()"),n("​")]),s("td",null,"获取线程状态"),s("td",null,[n("Java 中线程状态是用 6 个 enum 表示，分别为："),s("br"),n("NEW, RUNNABLE, BLOCKED, WAITING,"),s("br"),n("TIMED_WAITING, TERMINATED")])],-1)),a[22]||(a[22]=s("tr",null,[s("td",null,[n("​"),s("code",null,"interrupt()"),n("​")]),s("td",null,"打断线程"),s("td",null,[n("如果被打断线程正在 sleep，wait，join 会导致被"),s("br"),n("打断的线程抛出 InterruptedException，并清除"),s("br"),n("打断标记；如果打断正在运行的线程，则会设置"),s("br"),n("打断标记；park 的线程被打断，也会设置打断标记")])],-1)),s("tr",null,[s("td",null,[l(i,{color:"Coral"},{default:p(()=>[...a[0]||(a[0]=[n("interrupted()",-1)])]),_:1})]),a[1]||(a[1]=s("td",null,"判断当前线程是否被打断",-1)),a[2]||(a[2]=s("td",null,"会清除打断标记",-1))]),a[23]||(a[23]=s("tr",null,[s("td",null,[n("​"),s("code",null,"isInterrupted()"),n("​")]),s("td",null,"判断当前线程是否被打断"),s("td",null,"不会清除打断标记")],-1)),a[24]||(a[24]=s("tr",null,[s("td",null,[n("​"),s("code",null,"isAlive()"),n("​")]),s("td",null,"判断当前线程是否存活"),s("td")],-1)),a[25]||(a[25]=s("tr",null,[s("td",null,[n("​"),s("code",null,"isDaemon()"),n("​")]),s("td",null,"判断当前线程是否是守护线程"),s("td")],-1)),a[26]||(a[26]=s("tr",null,[s("td",null,[n("​"),s("code",null,"setDaemon(boolean on)"),n("​")]),s("td",null,"设置当前线程为守护线程"),s("td")],-1)),s("tr",null,[s("td",null,[l(i,{color:"Coral"},{default:p(()=>[...a[3]||(a[3]=[n("currentThread()",-1)])]),_:1})]),a[4]||(a[4]=s("td",null,"获取当前正在执行的线程",-1)),a[5]||(a[5]=s("td",null,null,-1))]),s("tr",null,[s("td",null,[l(i,{color:"Coral"},{default:p(()=>[...a[6]||(a[6]=[n("sleep(long n)",-1)])]),_:1})]),a[7]||(a[7]=s("td",null,[n("让当前执行的线程休眠n毫秒，"),s("br"),n("休眠时让出 CPU 的时间片"),s("br"),n("给其它线程")],-1)),a[8]||(a[8]=s("td",null,null,-1))]),s("tr",null,[s("td",null,[l(i,{color:"Coral"},{default:p(()=>[...a[9]||(a[9]=[n("yield()",-1)])]),_:1})]),a[10]||(a[10]=s("td",null,[n("提示线程调度器让出当前线程"),s("br"),n("对 CPU 的使用")],-1)),a[11]||(a[11]=s("td",null,[n("主要是为了测试和调试，它的具体的实现依赖于"),s("br"),n("操作系统的任务调度器")],-1))]),a[27]||(a[27]=s("tr",null,[s("td"),s("td"),s("td")],-1))])]),a[30]||(a[30]=t(`<h4 id="常见面试题-1" tabindex="-1">常见面试题 <a class="header-anchor" href="#常见面试题-1" aria-label="Permalink to &quot;常见面试题&quot;">​</a></h4><blockquote><p>面试题：notify()和notifyAll()有什么区别？</p></blockquote><ul><li>notifyAll:唤醒所有wait的线程</li><li>notify:只随机唤醒一个wait线程</li></ul><h5 id="wait-和-sleep" tabindex="-1">wait 和 sleep <a class="header-anchor" href="#wait-和-sleep" aria-label="Permalink to &quot;wait 和 sleep&quot;">​</a></h5><blockquote><p>面试题：在java中wait和sleep方法的不同？</p></blockquote><ul><li>共同点 <ul><li>wait(),wait(long)和sleep(long)的效果都是让当前线程暂时放弃CPU的使用权，进入阻塞状态</li></ul></li><li>不同点 <ul><li>1.方法归属不同 <ul><li>sleep(long)是Thread的静态方法</li><li>而wait(),wait(long)都是Object的成员方法，每个对象都有</li></ul></li><li>2、醒来时机不同 <ul><li>执行sleep(long)和wait(long)的线程都会在等待相应毫秒后醒来</li><li>wait(long)和wait0还可以被notify唤醒，wait()如果不唤醒就一直等下去</li><li>它们都可以被打断唤醒</li></ul></li><li>3.锁特性不同（重点） <ul><li>wait方法的调用必须先获取wait对象的锁，而sleep则无此限制</li><li>wait方法执行后会释放对象锁，允许其它线程获得该对象锁（我放弃cpu,但你们还可以用）</li><li>而sleep如果在synchronized代码块中执行，并不会释放对象锁（我放弃cpu,你们也用不了）</li></ul></li></ul></li></ul><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>class WaitSleepExample {</span></span>
+<span class="line"><span>    private static final Object LOCK = new Object();</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>    public static void main(String[] args) {</span></span>
+<span class="line"><span>        // 创建一个线程执行等待操作</span></span>
+<span class="line"><span>        Thread waitThread = new Thread(() -&gt; {</span></span>
+<span class="line"><span>            synchronized (LOCK) { // 必须在同步块内调用wait，这表示必须持有对象的锁</span></span>
+<span class="line"><span>                try {</span></span>
+<span class="line"><span>                    System.out.println(&quot;Wait Thread: Holding lock, now wait&quot;);</span></span>
+<span class="line"><span>                    LOCK.wait(); // 调用wait方法后，当前线程会释放LOCK对象上的锁，并进入等待状态</span></span>
+<span class="line"><span>                    System.out.println(&quot;Wait Thread: Exited wait&quot;);</span></span>
+<span class="line"><span>                } catch (InterruptedException e) {</span></span>
+<span class="line"><span>                    e.printStackTrace();</span></span>
+<span class="line"><span>                }</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        // 创建一个线程执行睡眠操作</span></span>
+<span class="line"><span>        Thread sleepThread = new Thread(() -&gt; {</span></span>
+<span class="line"><span>            synchronized (LOCK) { // 进入同步块，持有LOCK对象的锁</span></span>
+<span class="line"><span>                try {</span></span>
+<span class="line"><span>                    System.out.println(&quot;Sleep Thread: Holding lock, now sleep&quot;);</span></span>
+<span class="line"><span>                    Thread.sleep(1000); // 调用sleep方法，但不会释放LOCK对象上的锁</span></span>
+<span class="line"><span>                    System.out.println(&quot;Sleep Thread: Exited sleep&quot;);</span></span>
+<span class="line"><span>                } catch (InterruptedException e) {</span></span>
+<span class="line"><span>                    e.printStackTrace();</span></span>
+<span class="line"><span>                }</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        // 创建一个线程执行通知操作</span></span>
+<span class="line"><span>        Thread notifyThread = new Thread(() -&gt; {</span></span>
+<span class="line"><span>            synchronized (LOCK) { // 进入同步块，持有LOCK对象的锁</span></span>
+<span class="line"><span>                // 发送通知，告诉等待在LOCK对象上的线程可以继续执行</span></span>
+<span class="line"><span>                LOCK.notifyAll();</span></span>
+<span class="line"><span>                System.out.println(&quot;Notify Thread: Sent notification&quot;);</span></span>
+<span class="line"><span>            }</span></span>
+<span class="line"><span>        });</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>        waitThread.start(); // 启动等待线程</span></span>
+<span class="line"><span>        try {</span></span>
+<span class="line"><span>            Thread.sleep(500); // 确保waitThread先执行</span></span>
+<span class="line"><span>        } catch (InterruptedException e) {</span></span>
+<span class="line"><span>            e.printStackTrace();</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>        sleepThread.start(); // 启动睡眠线程</span></span>
+<span class="line"><span>        try {</span></span>
+<span class="line"><span>            Thread.sleep(500); // 确保sleepThread有机会执行</span></span>
+<span class="line"><span>        } catch (InterruptedException e) {</span></span>
+<span class="line"><span>            e.printStackTrace();</span></span>
+<span class="line"><span>        }</span></span>
+<span class="line"><span>        notifyThread.start(); // 启动通知线程</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><ul><li><strong>关于锁的不同处理</strong>： <ul><li><strong><code>wait()</code>方法</strong>：调用<code>wait()</code>时，线程必须持有对象的锁（这是通过在<code>synchronized</code>块内调用<code>wait()</code>来保证的）。一旦<code>wait()</code>被调用，线程会释放这个对象上的锁，允许其他线程获取这个锁。当其他线程在这个对象上调用<code>notify()</code>或<code>notifyAll()</code>时，等待的线程才有机会重新获取锁并继续执行。</li><li><strong><code>sleep()</code>方法</strong>：与<code>wait()</code>不同，调用<code>sleep()</code>时线程不会释放任何持有的锁。即使是在<code>synchronized</code>块内调用<code>sleep()</code>，当前线程仍然会保持对锁的持有，直到<code>sleep()</code>完成。这意味着，如果一个线程在持有某个对象锁的同时调用了<code>sleep()</code>，其他想要访问这个同步块的线程会被阻塞，直到睡眠线程醒来并退出同步块，释放锁。</li></ul></li></ul><p>→ 使用 sleep 的时候同步块代码线程会被阻塞。</p><h3 id="_6、synchronized-和-lock-的使用" tabindex="-1">6、Synchronized 和 Lock 的使用 <a class="header-anchor" href="#_6、synchronized-和-lock-的使用" aria-label="Permalink to &quot;6、Synchronized 和 Lock 的使用&quot;">​</a></h3><p>并发编程中，锁是经常需要用到的。这里讲述一下 Synchronized 和 Lock 的使用。</p><p>Synchronized 是 Java 并发编程 中很重要的关键字，另外一个很重要的是 volatile。</p><p>Syncronized 的目的是一次<strong>只允许一个线程进入由他修饰的代码段</strong>，从而允许他们进行自我保护。</p><p>Lock 是 Java并发编程中<strong>很重要的一个接口</strong>，它要比 Synchronized 关键字更能直译&quot;锁&quot;的概念，Lock需要<strong>手动加锁和手动解锁</strong>，一般通过 lock.lock() 方法来进行加锁， 通过 lock.unlock() 方法进行解锁。与 Lock 关联密切的锁有 ReetrantLock 和 ReadWriteLock。</p><h4 id="synchronized" tabindex="-1">Synchronized <a class="header-anchor" href="#synchronized" aria-label="Permalink to &quot;Synchronized&quot;">​</a></h4><blockquote><p>在方法上使用 Synchronized</p></blockquote><p>方法声明时使用，放在范围操作符之后,返回类型声明之前。即一次只能有一个线程进入该方法，其他线程要想在此时调用该方法，只能排队等候。</p><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">private</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> int</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> number;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> synchronized</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> numIncrease</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(){</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  number</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">++</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><blockquote><p>在某个代码段使用 Synchronized</p></blockquote><p>可以在某个代码块上使用 Synchronized 关键字，表示只能有一个线程进入某个代码段。</p><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> numDecrease</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(Object num){</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  synchronized</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (num){</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    number</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">++</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><blockquote><p>使用 Synchronized 锁住整个对象</p></blockquote><p>synchronized后面括号里是一对象，此时线程获得的是对象锁。</p><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> test</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() {</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">  synchronized</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> (</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF;">this</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) {</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    // ...</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">  }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><h4 id="lock" tabindex="-1">Lock <a class="header-anchor" href="#lock" aria-label="Permalink to &quot;Lock&quot;">​</a></h4><p>Lock 是 Java并发编程中<strong>很重要的一个接口</strong>，相关方法如下：</p><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Lock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> lock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> lockInterruptibly</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">throws</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> InterruptedException;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    boolean</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> tryLock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    boolean</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> tryLock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">long</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;"> time</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, TimeUnit </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">unit</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">) </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">throws</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> InterruptedException;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> unlock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    Condition </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">newCondition</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>常用方法</p><ul><li>lock() <ul><li>用来获取锁。如果锁被其他线程获取，则进行等待。</li><li>如果采用Lock，必须主动去释放锁，并且在发生异常时，不会自动释放锁</li></ul></li><li>tryLock() <ul><li>方法是有返回值的，它表示用来尝试获取锁，如果获取成功，则返回true，如果获取失败（即锁已被其他线程获取），则返回false，</li><li>这个方法无论如何都会立即返回。在拿不到锁时不会一直等待。</li></ul></li><li>tryLock(long time, TimeUnit unit) <ul><li>和tryLock()方法是类似</li><li>在拿不到锁时<strong>会等待一定的时间</strong>，在时间期限之内如果还拿不到锁，就返回false。如果如果一开始拿到锁或者在等待期间内拿到了锁，则返回true。</li></ul></li><li>lockInterruptibly() <ul><li>去获取锁时，如果线程正在等待获取锁，则这个线程能够响应中断，即<strong>中断线程的等待状态</strong>。</li><li>当两个线程同时通过 lock.lockInterruptibly() 想获取某个锁时，假若此时线程A获取到了锁，而线程B只有在等待，那么对线程B调用 threadB.interrupt() 方法能够中断线程B的等待过程。</li><li>由于 lockInterruptibly() 的声明中抛出了异常，所以 lock.lockInterruptibly() 必须放在try块中或者在调用lockInterruptibly() 的方法外声明抛出 InterruptedException。</li></ul></li></ul><blockquote><p>代码示例：</p></blockquote><p>lock()</p><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Lock lock </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> ...;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">lock.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">lock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">try</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    //处理任务</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">catch</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(Exception </span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70;">ex</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">){</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">     </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">finally</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    lock.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">unlock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">//释放锁</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>tryLock()</p><div class="language-javascript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">javascript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">Lock lock </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> ...</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">if</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(lock.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">tryLock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()) {</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">     try</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">         //处理任务</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">     }</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">catch</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(Exception ex){</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">         </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">     }</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">finally</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">         lock.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">unlock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">//释放锁</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">     }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">else</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    //如果不能获取锁，则直接做其他事情</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p><strong>lockInterruptibly()</strong></p><div class="language-javascript vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">javascript</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">public </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> method</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">() throws InterruptedException {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    lock.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">lockInterruptibly</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    try</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">     //.....</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    finally</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        lock.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">unlock</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">();</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    }</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><p>一般来说，使用Lock必须在try{}catch{}块中进行，并且将<strong>释放锁的操作放在finally块中进行</strong>，以保证锁一定被被释放，防止死锁的发生。</p><blockquote><p>注意，当一个线程获取了锁之后，是不会被interrupt()方法中断的。 单独调用 interrupt() 方法不能中断正在运行过程中的线程，只能<strong>中断阻塞过程中的线程</strong>。因此当通过lockInterruptibly()方法获取某个锁时，如果不能获取到，<strong>只有进行等待的情况下，是可以响应中断的</strong>。 而<strong>用synchronized修饰的话</strong>，当一个线程处于等待某个锁的状态，是无法被中断的，只有一直等待下去。</p></blockquote><hr><p>参考：</p><ul><li><a href="https://javaguide.cn/java/concurrent/java-concurrent-questions-01.html" target="_blank" rel="noreferrer">https://javaguide.cn/java/concurrent/java-concurrent-questions-01.html</a></li><li><a href="https://www.cnblogs.com/fmgao-technology/p/11077543.html" target="_blank" rel="noreferrer">https://www.cnblogs.com/fmgao-technology/p/11077543.html</a></li><li><a href="https://caochenlei.blog.csdn.net/article/details/119992847" target="_blank" rel="noreferrer">https://caochenlei.blog.csdn.net/article/details/119992847</a></li><li><a href="https://cloud.tencent.com/developer/article/1497476" target="_blank" rel="noreferrer">https://cloud.tencent.com/developer/article/1497476</a></li></ul>`,41))])}const m=e(c,[["render",d]]);export{v as __pageData,m as default};

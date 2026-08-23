@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    
+    <title>CompletableFuture方法使用 | Read</title>
+    <meta name="description" content="落七的笔记">
+    <meta name="generator" content="VitePress v1.6.4">
+    <link rel="preload stylesheet" href="/assets/style.DhPVQ0Je.css" as="style">
+    <link rel="preload stylesheet" href="/vp-icons.css" as="style">
+    
+    <script type="module" src="/assets/app.CzZfE7K6.js"></script>
+    <link rel="preload" href="/assets/inter-roman-latin.Di8DUHzh.woff2" as="font" type="font/woff2" crossorigin="">
+    <link rel="modulepreload" href="/assets/chunks/theme.rFHQIEiv.js">
+    <link rel="modulepreload" href="/assets/chunks/framework.Cp_kp8rY.js">
+    <link rel="modulepreload" href="/assets/notes_0_1_1.5_1.5.1_1.5.1.6_1.5.1.6.4_CompletableFuture方法使用.md.Bz0SR3cG.lean.js">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#f7f7f5">
+    <script id="check-dark-mode">(()=>{const e=localStorage.getItem("vitepress-theme-appearance")||"auto",a=window.matchMedia("(prefers-color-scheme: dark)").matches;(!e||e==="auto"?a:e==="dark")&&document.documentElement.classList.add("dark")})();</script>
+    <script id="check-mac-os">document.documentElement.classList.toggle("mac",/Mac|iPhone|iPod|iPad/i.test(navigator.platform));</script>
+  </head>
+  <body>
+    <div id="app"><div class="Layout" data-v-441f2ecc><!--[--><!--]--><!--[--><span tabindex="-1" data-v-33dc6829></span><a href="#VPContent" class="VPSkipLink visually-hidden" data-v-33dc6829>Skip to content</a><!--]--><!----><header class="VPNav" data-v-441f2ecc data-v-df2ff3a7><div class="VPNavBar" data-v-df2ff3a7 data-v-8be0785d><div class="wrapper" data-v-8be0785d><div class="container" data-v-8be0785d><div class="title" data-v-8be0785d><div class="VPNavBarTitle" data-v-8be0785d data-v-49e13d2a><a class="title" href="/" data-v-49e13d2a><!--[--><!--]--><!----><span data-v-49e13d2a>Read</span><!--[--><!--]--></a></div></div><div class="content" data-v-8be0785d><div class="content-body" data-v-8be0785d><!--[--><!--]--><div class="VPNavBarSearch search" data-v-8be0785d><!----></div><nav aria-labelledby="main-nav-aria-label" class="VPNavBarMenu menu" data-v-8be0785d data-v-52c41edc><span id="main-nav-aria-label" class="visually-hidden" data-v-52c41edc> Main Navigation </span><!--[--><!--]--></nav><!----><div class="VPNavBarAppearance appearance" data-v-8be0785d data-v-21dceff3><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title aria-checked="false" data-v-21dceff3 data-v-b2c1d637 data-v-090bebc6><span class="check" data-v-090bebc6><span class="icon" data-v-090bebc6><!--[--><span class="vpi-sun sun" data-v-b2c1d637></span><span class="vpi-moon moon" data-v-b2c1d637></span><!--]--></span></span></button></div><!----><div class="VPFlyout VPNavBarExtra extra" data-v-8be0785d data-v-3eacfb30 data-v-67777ab5><button type="button" class="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation" data-v-67777ab5><span class="vpi-more-horizontal icon" data-v-67777ab5></span></button><div class="menu" data-v-67777ab5><div class="VPMenu" data-v-67777ab5 data-v-2f10f32d><!----><!--[--><!--[--><!----><div class="group" data-v-3eacfb30><div class="item appearance" data-v-3eacfb30><p class="label" data-v-3eacfb30>Appearance</p><div class="appearance-action" data-v-3eacfb30><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title aria-checked="false" data-v-3eacfb30 data-v-b2c1d637 data-v-090bebc6><span class="check" data-v-090bebc6><span class="icon" data-v-090bebc6><!--[--><span class="vpi-sun sun" data-v-b2c1d637></span><span class="vpi-moon moon" data-v-b2c1d637></span><!--]--></span></span></button></div></div></div><!----><!--]--><!--]--></div></div></div><!--[--><!--]--><button type="button" class="VPNavBarHamburger hamburger" aria-label="mobile navigation" aria-expanded="false" aria-controls="VPNavScreen" data-v-8be0785d data-v-1fa6dd47><span class="container" data-v-1fa6dd47><span class="top" data-v-1fa6dd47></span><span class="middle" data-v-1fa6dd47></span><span class="bottom" data-v-1fa6dd47></span></span></button></div></div></div></div><div class="divider" data-v-8be0785d><div class="divider-line" data-v-8be0785d></div></div></div><!----></header><div class="VPLocalNav empty fixed" data-v-441f2ecc data-v-6cfa4e35><div class="container" data-v-6cfa4e35><!----><div class="VPLocalNavOutlineDropdown" style="--vp-vh:0px;" data-v-6cfa4e35 data-v-102d589e><button data-v-102d589e>Return to top</button><!----></div></div></div><!----><div class="VPContent" id="VPContent" data-v-441f2ecc data-v-b99a14fa><div class="VPDoc has-aside" data-v-b99a14fa data-v-88ad96f3><!--[--><!--]--><div class="container" data-v-88ad96f3><div class="aside" data-v-88ad96f3><div class="aside-curtain" data-v-88ad96f3></div><div class="aside-container" data-v-88ad96f3><div class="aside-content" data-v-88ad96f3><div class="VPDocAside" data-v-88ad96f3 data-v-2e850386><!--[--><!--]--><!--[--><!--]--><nav aria-labelledby="doc-outline-aria-label" class="VPDocAsideOutline" data-v-2e850386 data-v-47e9ab94><div class="content" data-v-47e9ab94><div class="outline-marker" data-v-47e9ab94></div><div aria-level="2" class="outline-title" id="doc-outline-aria-label" role="heading" data-v-47e9ab94>On this page</div><ul class="VPDocOutlineItem root" data-v-47e9ab94 data-v-011675d1><!--[--><!--]--></ul></div></nav><!--[--><!--]--><div class="spacer" data-v-2e850386></div><!--[--><!--]--><!----><!--[--><!--]--><!--[--><!--]--></div></div></div></div><div class="content" data-v-88ad96f3><div class="content-container" data-v-88ad96f3><!--[--><!--]--><main class="main" data-v-88ad96f3><div style="position:relative;" class="vp-doc _notes_0_1_1_5_1_5_1_1_5_1_6_1_5_1_6_4_CompletableFuture%E6%96%B9%E6%B3%95%E4%BD%BF%E7%94%A8" data-v-88ad96f3><div><p>CompletableFuture 是在使用线程池的时候经常使用到的一个类，在实际使用的时候，发现在汇总的时候会有一些不同的操作。</p><p>我们直接来看一个示例：</p><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>//并行调用  </span></span>
+<span class="line"><span>public Map&lt;String, String&gt; getBasicTranslationBatch(List&lt;String&gt; text) {  </span></span>
+<span class="line"><span>    if (text == null || text.isEmpty()) {  </span></span>
+<span class="line"><span>        return Map.of();  </span></span>
+<span class="line"><span>    }  </span></span>
+<span class="line"><span>  </span></span>
+<span class="line"><span>    //对text进行去重处理  </span></span>
+<span class="line"><span>    text = text.stream().distinct().collect(Collectors.toList());  </span></span>
+<span class="line"><span>  </span></span>
+<span class="line"><span>    int batchSize = 15;  </span></span>
+<span class="line"><span>    List&lt;CompletableFuture&lt;Map&lt;String, String&gt;&gt;&gt; futures = new ArrayList&lt;&gt;();  </span></span>
+<span class="line"><span>  </span></span>
+<span class="line"><span>    for (int i = 0; i &lt; text.size(); i += batchSize) {  </span></span>
+<span class="line"><span>        int endIndex = Math.min(i + batchSize, text.size());  </span></span>
+<span class="line"><span>        List&lt;String&gt; sublist = text.subList(i, endIndex);  </span></span>
+<span class="line"><span>        CompletableFuture&lt;Map&lt;String, String&gt;&gt; future = CompletableFuture.supplyAsync(  </span></span>
+<span class="line"><span>            () -&gt; getBasicTranslationSafely(sublist),  </span></span>
+<span class="line"><span>            findBasicTranslationExecutor  </span></span>
+<span class="line"><span>        );  </span></span>
+<span class="line"><span>        futures.add(future);  </span></span>
+<span class="line"><span>    }  </span></span>
+<span class="line"><span>  </span></span>
+<span class="line"><span>    try {  </span></span>
+<span class="line"><span>        CompletableFuture&lt;Void&gt; allOfFuture = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));  </span></span>
+<span class="line"><span>        allOfFuture.get();  </span></span>
+<span class="line"><span>    } catch (Exception e) {  </span></span>
+<span class="line"><span>        log.error(&quot;Error in getBasicTranslationBatch: {}&quot;, e.getMessage(), e);  </span></span>
+<span class="line"><span>        throw new GenericException(GenericException.Code.FAIL, &quot;请求外部接口失败&quot;);  </span></span>
+<span class="line"><span>    }  </span></span>
+<span class="line"><span>    return futures.stream()  </span></span>
+<span class="line"><span>        .map(CompletableFuture::join)  </span></span>
+<span class="line"><span>        .flatMap(map -&gt; map.entrySet().stream())  </span></span>
+<span class="line"><span>        .collect(Collectors.toMap(  </span></span>
+<span class="line"><span>            Map.Entry::getKey,  </span></span>
+<span class="line"><span>            Map.Entry::getValue,  </span></span>
+<span class="line"><span>            // 如果有重复的源文本，保留第一个翻译结果  </span></span>
+<span class="line"><span>            (existing, replacement) -&gt; existing  </span></span>
+<span class="line"><span>        ));  </span></span>
+<span class="line"><span>}</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>@Bean(&quot;findBasicTranslationExecutor&quot;)  </span></span>
+<span class="line"><span>public Executor findBasicTranslationExecutor() {  </span></span>
+<span class="line"><span>    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();  </span></span>
+<span class="line"><span>    // 场景：调用外部接口  </span></span>
+<span class="line"><span>    // 设置最大线程数  </span></span>
+<span class="line"><span>    executor.setMaxPoolSize(25);  </span></span>
+<span class="line"><span>    // 设置核心线程数  </span></span>
+<span class="line"><span>    executor.setCorePoolSize(25);  </span></span>
+<span class="line"><span>    // 配置队列大小  </span></span>
+<span class="line"><span>    executor.setQueueCapacity(500);  </span></span>
+<span class="line"><span>    // 拒绝策略-由调用线程（提交任务的线程）处理该任务  </span></span>
+<span class="line"><span>    executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());  </span></span>
+<span class="line"><span>    // 设置线程活跃时间（秒）  </span></span>
+<span class="line"><span>    executor.setKeepAliveSeconds(60);  </span></span>
+<span class="line"><span>    // 设置默认线程名称  </span></span>
+<span class="line"><span>    executor.setThreadNamePrefix(&quot;findBasicTranslationExecutor&quot;);  </span></span>
+<span class="line"><span>    // 等待所有任务结束后再关闭线程池  </span></span>
+<span class="line"><span>    executor.setWaitForTasksToCompleteOnShutdown(true);  </span></span>
+<span class="line"><span>    // 执行初始化  </span></span>
+<span class="line"><span>    executor.initialize();  </span></span>
+<span class="line"><span>  </span></span>
+<span class="line"><span>    return TtlExecutors.getTtlExecutor(executor);  </span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>解释一下上面 <code>allOfFuture.get(); </code> 这一行代码的动作</p><p>方式一</p><p>主线程合并结果（平衡方案）</p><ul><li><code>allOfFuture.get()</code>：确保所有异步任务完成。主线程执行结果合并</li></ul><p>这个动作是汇总异步操作返回的所有返回结果，除了上面这种写法之外，还有其他常见的两种</p><p>方式二</p><p>同步合并结果（轻量级）</p><ul><li>合并操作是<strong>同步</strong>的，适合简单快速的聚合操作</li></ul><div class="language- vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang"></span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>public Map&lt;String, String&gt; getBasicTranslationBatch(List&lt;String&gt; text) {</span></span>
+<span class="line"><span>    // ... [批处理创建]</span></span>
+<span class="line"><span>    try {</span></span>
+<span class="line"><span>        CompletableFuture&lt;Void&gt; allOfFuture = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));</span></span>
+<span class="line"><span>        return allOfFuture.thenApply(v -&gt;  // 同步结果合并</span></span>
+<span class="line"><span>            futures.stream()</span></span>
+<span class="line"><span>                .map(CompletableFuture::join)</span></span>
+<span class="line"><span>                .flatMap(map -&gt; map.entrySet().stream())</span></span>
+<span class="line"><span>                .collect(Collectors.toMap(...))</span></span>
+<span class="line"><span>        ).get(); // 阻塞获取最终结果</span></span>
+<span class="line"><span>    } catch (Exception e) {</span></span>
+<span class="line"><span>        // ... [异常处理]</span></span>
+<span class="line"><span>    }</span></span>
+<span class="line"><span>}</span></span></code></pre></div><p>方式三</p><p>异步合并结果（重量级）</p><ul><li>开启一个新的线程，去做汇总操作</li><li>聚合逻辑复杂耗时 建议使用这种方式</li></ul><div class="language-java vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">java</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> List</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">&lt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">ProductSkuSpecificationListResponse</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">&gt;</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> findSkuSpecifications</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(...) {</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    // ... [批处理创建]</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    CompletableFuture&lt;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">Void</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt; allOfFuture </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> CompletableFuture.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">allOf</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(...);</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    CompletableFuture&lt;List&lt;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">T</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt;&gt; combinedResults </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> allOfFuture.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">thenCompose</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(v </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">-&gt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> </span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        CompletableFuture.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">supplyAsync</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(() </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">-&gt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> {  </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 开启新线程合并结果</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">            futures.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">stream</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">                .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">map</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(CompletableFuture</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">::</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">join)</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">                .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">flatMap</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(list </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">-&gt;</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> list.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">getList</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">().</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">stream</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">())</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">                .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">collect</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(Collectors.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">toList</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">())</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">        })</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    );</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">    List&lt;</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">T</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&gt; products </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">=</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> combinedResults.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(); </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// 阻塞等待</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    return</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> products;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></div><hr><p>看了一下相关的解释，看 平时使用上面的代码示例方式就好了；</p><p>方式一和方式二 的性能差距并不是很明显，可能一般会 在响应式编程链路中需要延续异步特性时使用</p><p>方式二；不过使用方式二的话，可能在线程池触发拒绝策略的时候会有问题（看具体拒绝策略）。</p></div></div></main><footer class="VPDocFooter" data-v-88ad96f3 data-v-9fb35e75><!--[--><!--]--><!----><!----></footer><!--[--><!--]--></div></div></div><!--[--><!--]--></div></div><!----><!--[--><!--]--></div></div>
+    <script>window.__VP_HASH_MAP__=JSON.parse("{\"index.md\":\"T3yw8kD4\",\"notes_0_1_1.5_1.5.1_1.5.1.6_1.5.1.6.2_java并发编程_基础概念.md\":\"Cp05i0t-\",\"notes_0_1_1.5_1.5.1_1.5.1.6_1.5.1.6.2_java并发编程_基础概念_补充内容.md\":\"CCH0G6Fo\",\"notes_0_1_1.5_1.5.1_1.5.1.6_1.5.1.6.4_completablefuture方法使用.md\":\"Bz0SR3cG\",\"notes_0_1_1.5_1.5.1_1.5.1.6_1.5.1.6.4_java并发编程_线程池.md\":\"CmFa75NO\",\"notes_0_1_1.7_1.7.1_1.7.1.6_1.7.1.6.28_readpage 使用手册.md\":\"CUmN_gFH\",\"read_java-并发从入门到面试_第-1-章-线程的创建_index.md\":\"CQJxTJlZ\",\"read_java-并发从入门到面试_第-2-章-线程池_index.md\":\"TmxcyMC6\",\"read_博客笔记_第-1-章-readpage-使用手册_index.md\":\"Cp-TbtMC\"}");window.__VP_SITE_DATA__=JSON.parse("{\"lang\":\"zh-CN\",\"dir\":\"ltr\",\"title\":\"Read\",\"description\":\"落七的笔记\",\"base\":\"/\",\"head\":[],\"router\":{\"prefetchLinks\":true},\"appearance\":true,\"themeConfig\":{\"nav\":[],\"sidebar\":false,\"outline\":false,\"docFooter\":false},\"locales\":{},\"scrollOffset\":134,\"cleanUrls\":false}");</script>
+    
+  </body>
+</html>

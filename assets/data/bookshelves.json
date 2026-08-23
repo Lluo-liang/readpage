@@ -1,0 +1,288 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-23T19:59:31+08:00",
+  "shelves": [
+    {
+      "name": "Java 基础",
+      "books": [
+        {
+          "id": "java-并发从入门到面试",
+          "title": "Java 并发从入门到面试",
+          "shelfOrder": 1.0,
+          "steps": [
+            {
+              "title": "第一步 理解线程",
+              "chapters": [
+                {
+                  "id": "第-1-章-线程的创建",
+                  "title": "第 1 章 线程的创建",
+                  "attrs": [],
+                  "notes": [
+                    {
+                      "note": "Java并发编程_基础概念",
+                      "path": "/notes/0/1/1.5/1.5.1/1.5.1.6/1.5.1.6.2/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B_%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5",
+                      "outline": [
+                        {
+                          "level": 3,
+                          "title": "1、基础概念",
+                          "anchor": "1基础概念"
+                        },
+                        {
+                          "level": 3,
+                          "title": "2、什么是Java 线程",
+                          "anchor": "2什么是java-线程"
+                        },
+                        {
+                          "level": 3,
+                          "title": "3、线程的生命周期及五种基本状态",
+                          "anchor": "3线程的生命周期及五种基本状态"
+                        },
+                        {
+                          "level": 3,
+                          "title": "4、创建线程",
+                          "anchor": "4创建线程"
+                        },
+                        {
+                          "level": 3,
+                          "title": "5、线程基本方法",
+                          "anchor": "5线程基本方法"
+                        },
+                        {
+                          "level": 3,
+                          "title": "6、Synchronized 和 Lock 的使用",
+                          "anchor": "6synchronized-和-lock-的使用"
+                        }
+                      ]
+                    }
+                  ],
+                  "charCount": 18140,
+                  "path": "/read/java-并发从入门到面试/第-1-章-线程的创建/"
+                },
+                {
+                  "id": "第-2-章-线程池",
+                  "title": "第 2 章 线程池",
+                  "attrs": [
+                    "选读",
+                    "重点"
+                  ],
+                  "notes": [
+                    {
+                      "note": "Java并发编程_线程池",
+                      "path": "/notes/0/1/1.5/1.5.1/1.5.1.6/1.5.1.6.4/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B_%E7%BA%BF%E7%A8%8B%E6%B1%A0",
+                      "outline": [
+                        {
+                          "level": 3,
+                          "title": "1、什么是线程池",
+                          "anchor": "1什么是线程池"
+                        },
+                        {
+                          "level": 3,
+                          "title": "2、Executor 框架介绍",
+                          "anchor": "2executor-框架介绍"
+                        },
+                        {
+                          "level": 3,
+                          "title": "3、ThreadPoolExecutor 类使用 ★",
+                          "anchor": "3threadpoolexecutor-类使用-"
+                        },
+                        {
+                          "level": 3,
+                          "title": "4、线程池原理分析",
+                          "anchor": "4线程池原理分析"
+                        },
+                        {
+                          "level": 3,
+                          "title": "5、线程池最佳实践",
+                          "anchor": "5线程池最佳实践"
+                        }
+                      ]
+                    },
+                    {
+                      "note": "CompletableFuture方法使用",
+                      "path": "/notes/0/1/1.5/1.5.1/1.5.1.6/1.5.1.6.4/CompletableFuture%E6%96%B9%E6%B3%95%E4%BD%BF%E7%94%A8",
+                      "outline": []
+                    }
+                  ],
+                  "charCount": 14368,
+                  "path": "/read/java-并发从入门到面试/第-2-章-线程池/"
+                }
+              ]
+            },
+            {
+              "title": "第二步 并发工具",
+              "chapters": [
+                {
+                  "id": "第-3-章-待整理",
+                  "title": "第 3 章 待整理",
+                  "attrs": [],
+                  "notes": [],
+                  "charCount": 0,
+                  "path": null
+                }
+              ]
+            }
+          ],
+          "afterword": {
+            "note": "Java并发编程_基础概念_补充内容",
+            "path": "/notes/0/1/1.5/1.5.1/1.5.1.6/1.5.1.6.2/Java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B_%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5_%E8%A1%A5%E5%85%85%E5%86%85%E5%AE%B9"
+          },
+          "progress": {
+            "total": 2,
+            "countable": 1
+          },
+          "charCount": 32508,
+          "status": "想读"
+        }
+      ]
+    },
+    {
+      "name": "博客笔记",
+      "books": [
+        {
+          "id": "博客笔记",
+          "title": "博客笔记",
+          "shelfOrder": 1.0,
+          "steps": [
+            {
+              "title": "第一步 工具的使用",
+              "chapters": [
+                {
+                  "id": "第-1-章-readpage-使用手册",
+                  "title": "第 1 章 readpage 使用手册",
+                  "attrs": [],
+                  "notes": [
+                    {
+                      "note": "readpage 使用手册",
+                      "path": "/notes/0/1/1.7/1.7.1/1.7.1.6/1.7.1.6.28/readpage%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C",
+                      "outline": [
+                        {
+                          "level": 2,
+                          "title": "1. ReadPage 是什么",
+                          "anchor": "1-readpage-是什么"
+                        },
+                        {
+                          "level": 2,
+                          "title": "2. 效果一览",
+                          "anchor": "2-效果一览"
+                        },
+                        {
+                          "level": 3,
+                          "title": "2.1 书架页：像真实书架",
+                          "anchor": "21-书架页像真实书架"
+                        },
+                        {
+                          "level": 3,
+                          "title": "2.2 阅读页：沉浸式阅读",
+                          "anchor": "22-阅读页沉浸式阅读"
+                        },
+                        {
+                          "level": 3,
+                          "title": "2.3 阅读工具：目录 / 大纲 / 搜索",
+                          "anchor": "23-阅读工具目录--大纲--搜索"
+                        },
+                        {
+                          "level": 3,
+                          "title": "2.4 进度与状态：全自动",
+                          "anchor": "24-进度与状态全自动"
+                        },
+                        {
+                          "level": 2,
+                          "title": "3. 核心概念：三个角色",
+                          "anchor": "3-核心概念三个角色"
+                        },
+                        {
+                          "level": 2,
+                          "title": "4. 五分钟上手",
+                          "anchor": "4-五分钟上手"
+                        },
+                        {
+                          "level": 3,
+                          "title": "4.1 环境准备",
+                          "anchor": "41-环境准备"
+                        },
+                        {
+                          "level": 3,
+                          "title": "4.2 获取项目",
+                          "anchor": "42-获取项目"
+                        },
+                        {
+                          "level": 3,
+                          "title": "4.3 写第一本书",
+                          "anchor": "43-写第一本书"
+                        },
+                        {
+                          "level": 3,
+                          "title": "4.4 同步与本地预览",
+                          "anchor": "44-同步与本地预览"
+                        },
+                        {
+                          "level": 3,
+                          "title": "4.5 部署上线（GitHub Pages）",
+                          "anchor": "45-部署上线github-pages"
+                        },
+                        {
+                          "level": 2,
+                          "title": "5. 书文件格式参考",
+                          "anchor": "5-书文件格式参考"
+                        },
+                        {
+                          "level": 3,
+                          "title": "5.1 frontmatter 字段",
+                          "anchor": "51-frontmatter-字段"
+                        },
+                        {
+                          "level": 3,
+                          "title": "5.2 正文结构",
+                          "anchor": "52-正文结构"
+                        },
+                        {
+                          "level": 3,
+                          "title": "5.3 章节属性与特殊写法",
+                          "anchor": "53-章节属性与特殊写法"
+                        },
+                        {
+                          "level": 3,
+                          "title": "5.4 完整示例",
+                          "anchor": "54-完整示例"
+                        },
+                        {
+                          "level": 2,
+                          "title": "6. 同步脚本说明",
+                          "anchor": "6-同步脚本说明"
+                        },
+                        {
+                          "level": 2,
+                          "title": "7. 常见问题",
+                          "anchor": "7-常见问题"
+                        },
+                        {
+                          "level": 2,
+                          "title": "8. 设计取舍与限制",
+                          "anchor": "8-设计取舍与限制"
+                        },
+                        {
+                          "level": 2,
+                          "title": "9. 项目结构速览",
+                          "anchor": "9-项目结构速览"
+                        }
+                      ]
+                    }
+                  ],
+                  "charCount": 5434,
+                  "path": "/read/博客笔记/第-1-章-readpage-使用手册/"
+                }
+              ]
+            }
+          ],
+          "afterword": null,
+          "progress": {
+            "total": 1,
+            "countable": 1
+          },
+          "charCount": 5434,
+          "cover": "https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/202311131716524.jpg"
+        }
+      ]
+    }
+  ]
+}
