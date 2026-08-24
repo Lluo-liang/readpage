@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-23T20:11:51+08:00",
+  "generatedAt": "2026-08-24T09:19:59+08:00",
   "shelves": [
     {
       "name": "Java 基础",
@@ -280,6 +280,19 @@
             "countable": 1
           },
           "charCount": 5434,
+          "cover": "https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/202311131716524.jpg"
+        },
+        {
+          "id": "阅读笔记书籍模板",
+          "title": "阅读笔记书籍模板",
+          "shelfOrder": 1.0,
+          "steps": [],
+          "afterword": null,
+          "progress": {
+            "total": 0,
+            "countable": 0
+          },
+          "charCount": 0,
           "cover": "https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/202311131716524.jpg"
         }
       ]
