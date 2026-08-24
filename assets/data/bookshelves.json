@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-24T09:19:59+08:00",
+  "generatedAt": "2026-08-24T23:31:46+08:00",
   "shelves": [
     {
       "name": "Java 基础",
@@ -132,6 +132,46 @@
           },
           "charCount": 32508,
           "status": "想读"
+        }
+      ]
+    },
+    {
+      "name": "AGI",
+      "books": [
+        {
+          "id": "ai-agent-book-阅读笔记",
+          "title": "ai-agent-book 阅读笔记",
+          "shelfOrder": 2.0,
+          "steps": [
+            {
+              "title": "Agent Book 阅读",
+              "chapters": [
+                {
+                  "id": "第1章-ai-agent-入门",
+                  "title": "第1章 AI Agent 入门",
+                  "attrs": [],
+                  "notes": [],
+                  "charCount": 0,
+                  "path": null
+                },
+                {
+                  "id": "第2章-上下文工程",
+                  "title": "第2章 上下文工程",
+                  "attrs": [],
+                  "notes": [],
+                  "charCount": 0,
+                  "path": null
+                }
+              ]
+            }
+          ],
+          "afterword": null,
+          "progress": {
+            "total": 0,
+            "countable": 0
+          },
+          "charCount": 0,
+          "cover": "https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/202311131716524.jpg"
         }
       ]
     },
@@ -280,19 +320,6 @@
             "countable": 1
           },
           "charCount": 5434,
-          "cover": "https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/202311131716524.jpg"
-        },
-        {
-          "id": "阅读笔记书籍模板",
-          "title": "阅读笔记书籍模板",
-          "shelfOrder": 1.0,
-          "steps": [],
-          "afterword": null,
-          "progress": {
-            "total": 0,
-            "countable": 0
-          },
-          "charCount": 0,
           "cover": "https://obsidian-picture.oss-cn-shenzhen.aliyuncs.com/luoblog/202311131716524.jpg"
         }
       ]
