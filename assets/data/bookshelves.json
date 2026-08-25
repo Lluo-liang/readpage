@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-08-24T23:31:46+08:00",
+  "generatedAt": "2026-08-25T09:21:17+08:00",
   "shelves": [
     {
       "name": "Java 基础",
@@ -142,29 +142,7 @@
           "id": "ai-agent-book-阅读笔记",
           "title": "ai-agent-book 阅读笔记",
           "shelfOrder": 2.0,
-          "steps": [
-            {
-              "title": "Agent Book 阅读",
-              "chapters": [
-                {
-                  "id": "第1章-ai-agent-入门",
-                  "title": "第1章 AI Agent 入门",
-                  "attrs": [],
-                  "notes": [],
-                  "charCount": 0,
-                  "path": null
-                },
-                {
-                  "id": "第2章-上下文工程",
-                  "title": "第2章 上下文工程",
-                  "attrs": [],
-                  "notes": [],
-                  "charCount": 0,
-                  "path": null
-                }
-              ]
-            }
-          ],
+          "steps": [],
           "afterword": null,
           "progress": {
             "total": 0,
